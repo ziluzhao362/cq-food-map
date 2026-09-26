@@ -45,7 +45,7 @@
 
   .mk { display: flex; align-items: center; justify-content: center; font-weight: 600; position: relative; }
   .mk-food { width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 12px; background: #2563eb; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
-  .mk-spot { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11.5px; background: #f59e0b; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+  .mk-spot { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11.5px; background: #e11d48; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
   .mk-hotel { width: 19px; height: 19px; border-radius: 5px; background: #111827; color: #fff; font-size: 10.5px; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
   .mk-airport { width: 22px; height: 22px; border-radius: 50%; background: #111827; color: #fff; font-size: 12px; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
   .mk-warn::after { content: "!"; position: absolute; top: -7px; right: -7px; width: 13px; height: 13px; border-radius: 50%; background: #ef4444; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff; }
@@ -81,7 +81,7 @@
 <body>
 <header>
   <div class="brand">重庆吃货地图</div>
-  <div class="wx">10.5 雨转阴 19–26° · 10.6 多云转雨 20–29° · 10.7 雨 20–25° · 10.8 雨转阴 18–20°（中央气象台 9.26 趋势预报）</div>
+  <div class="wx" id="wxLine"></div>
   <div class="row" id="dayTabs"></div>
   <div class="row" id="layerChips"></div>
 </header>
@@ -119,15 +119,15 @@ var SPOTINFO = {
  museum:   { ticket: "免费", rsvp: "「重庆中国三峡博物馆」公众号预约；周一闭馆（法定节假日除外）", student: "免费", note: "9:00–17:00，室内主场，雨天正好", food: "曾家岩/上清寺" },
  hall:     { ticket: "入内 8 元（外观免费）", rsvp: "购票即入；周一闭馆（法定节假日除外）", student: "学生半价 4 元", note: "博物馆正对面，拍照 10 分钟", food: "同博物馆" },
  zhongshan:{ ticket: "免费（周公馆/桂园）", rsvp: "红岩博物馆公众号预约", student: "免费", note: "历史街区，大礼堂步行 10 分钟", food: "中山四路咖啡馆" },
- suodao:   { ticket: "单程 30 元", rsvp: "⚠️「长江索道」公众号购当天票自动取号，等 2–4 小时不用现场排，等候期逛博物馆", student: "学生优惠口径不一，以现场为准", note: "7:15 先取号", food: "新华路/小什字" },
- luohan:   { ticket: "10–20 元（口径不一）", rsvp: "无需预约", student: "学生半价", note: "酒店步行 5 分钟，注意 17 点关门", food: "解放碑商圈" },
+ suodao:   { ticket: "单程 30 元", rsvp: "⚠️「长江索道」公众号购当天票自动取号，等 2–4 小时不用现场排，等候期逛博物馆", student: "学生半价（≈15 元，现场凭证购票）", note: "7:15 先取号", food: "新华路/小什字" },
+ luohan:   { ticket: "20 元（现场扫码购票）", rsvp: "无需预约", student: "学生半价 10 元", note: "酒店步行 5 分钟，注意 17 点关门", food: "解放碑商圈" },
  huguang:  { ticket: "32 元", rsvp: "无需预约，购票即入", student: "学生半价 16 元", note: "9:00–18:00（17:00 停售）；半室内，小雨无碍（示意坐标）", food: "白象街" },
  hongyadong:{ ticket: "免费", rsvp: "⚠️小程序「洪崖洞」实名预约，建议提前一周", student: "免费", note: "亮灯约 19:30；小雨照常；日限 12.2 万人次", food: "八一好吃街、戴家巷" }
 };
 
 // kind: meal 吃饭段(蓝) / sight 景点段(橙) / transfer 转场(灰虚线)；route=ROUTES 键，rev=true 反向；rail/walk=直线虚线
 var DAYS = [
-{ label: "Day 1 · 10.5", wx: "🌦 雨转阴 19–26°", summary: "≈60 km｜打车 ≈170 元（机场段坐轨道 ≈120）｜南山必去日",
+{ label: "Day 1 · 10.5", wx: "🌦 雨转阴 19–26°", summary: "南山必去日",
  stops: [
   { n: "机场 T3 落地", t: "10:00", slot: "上午", type: "airport", ll: AIRPORT },
   { n: "朱儿面庄", t: "11:00–12:00", slot: "中午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
@@ -138,15 +138,15 @@ var DAYS = [
   { n: "回酒店", t: "≈22:45", slot: "晚上", type: "hotel", ll: HOTEL, hide: true }
  ],
  legs: [
-  { kind: "transfer", route: "机场|面庄", label: "打车 25km ≈54 元 · 或轨道 5 元" },
-  { kind: "transfer", route: "面庄|酒店", label: "打车 11km ≈26 元" },
-  { kind: "transfer", route: "酒店|黄葛古道", label: "打车 4.2km ≈12 元 · 或 6 号线上新街" },
-  { kind: "meal", route: "黄桷垭|富玉", label: "打车 14.4km ≈33 元" },
-  { kind: "meal", route: "富玉|烤匠", label: "打车 5.3km ≈15 元" },
-  { kind: "transfer", route: "烤匠|酒店", label: "打车 13.2km ≈30 元" }
+  { kind: "transfer", route: "机场|面庄", label: "打车 · 或 10 号线换 3 号线" },
+  { kind: "transfer", route: "面庄|酒店", label: "打车" },
+  { kind: "transfer", route: "酒店|黄葛古道", label: "打车 · 或 6 号线上新街" },
+  { kind: "meal", route: "黄桷垭|富玉", label: "打车" },
+  { kind: "meal", route: "富玉|烤匠", label: "打车" },
+  { kind: "transfer", route: "烤匠|酒店", label: "打车" }
  ]
 },
-{ label: "Day 2 · 10.6", wx: "🌥 多云转雨 20–29°", summary: "≈70 km｜打车 ≈165 元｜上午趁多云去渣滓洞白公馆，下午雨天回酒店休整",
+{ label: "Day 2 · 10.6", wx: "🌥 多云转雨 20–29°", summary: "上午趁多云去渣滓洞白公馆，下午雨天回酒店休整",
  stops: [
   { n: "酒店出发", t: "7:10", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "朱儿面庄", t: "7:30–8:30", slot: "上午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
@@ -159,17 +159,17 @@ var DAYS = [
   { n: "回酒店", t: "≈22:00", slot: "晚上", type: "hotel", ll: HOTEL, hide: true }
  ],
  legs: [
-  { kind: "transfer", route: "面庄|酒店", rev: true, label: "打车 11km ≈26 元" },
+  { kind: "transfer", route: "面庄|酒店", rev: true, label: "打车" },
   { kind: "sight", label: "3 号线→两路口换 1 号线→烈士墓+210 路 ≈1 小时", rail: true },
   { kind: "sight", label: "步行小路 10 分 · 或观光巴士", walk: true },
-  { kind: "meal", route: "渣滓洞|野椒鸡", label: "打车 17.5km ≈39 元" },
-  { kind: "transfer", route: "野椒鸡|酒店", label: "打车 8.1km ≈20 元" },
-  { kind: "transfer", route: "酒店|炒虾", label: "打车 7.4km ≈19 元" },
-  { kind: "meal", route: "炒虾|咖咖", label: "打车 4.8km ≈14 元" },
-  { kind: "transfer", route: "咖咖|酒店", label: "打车 10.7km ≈25 元" }
+  { kind: "meal", route: "渣滓洞|野椒鸡", label: "打车" },
+  { kind: "transfer", route: "野椒鸡|酒店", label: "打车" },
+  { kind: "transfer", route: "酒店|炒虾", label: "打车" },
+  { kind: "meal", route: "炒虾|咖咖", label: "打车" },
+  { kind: "transfer", route: "咖咖|酒店", label: "打车" }
  ]
 },
-{ label: "Day 3 · 10.7", wx: "🌧 雨 20–25°", summary: "≈12 km｜打车 ≈85 元｜雨天室内日：博物馆+索道+罗汉寺+九火锅+洪崖洞",
+{ label: "Day 3 · 10.7", wx: "🌧 雨 20–25°", summary: "雨天室内日：博物馆+索道+罗汉寺+九火锅+洪崖洞",
  stops: [
   { n: "酒店·索道购票取号", t: "7:15", slot: "上午", type: "hotel", ll: HOTEL, hide: true },
   { n: "三峡博物馆", t: "8:30–10:30", slot: "上午", type: "spot", ll: [106.55034, 29.56208], sid: "museum" },
@@ -188,17 +188,17 @@ var DAYS = [
   { kind: "sight", label: "2 号线曾家岩 ≈15 分", rail: true },
   { kind: "sight", label: "步行 3 分", walk: true },
   { kind: "sight", label: "步行 10 分", walk: true },
-  { kind: "sight", label: "步行 15 分 · 或打车 ≈10 元", walk: true },
+  { kind: "sight", label: "步行 15 分 · 或打车", walk: true },
   { kind: "meal", label: "步行 10 分", walk: true },
   { kind: "sight", label: "步行 8 分", walk: true },
   { kind: "sight", label: "步行 12 分", walk: true },
-  { kind: "meal", label: "打车 ≈10 元", walk: true },
-  { kind: "sight", label: "打车 ≈12 元 · 或千厮门大桥步行 20 分", walk: true },
-  { kind: "meal", route: "洪崖洞|独一味", label: "打车 6.1km ≈16 元" },
-  { kind: "transfer", route: "独一味|酒店", label: "打车 6.6km ≈17 元" }
+  { kind: "meal", label: "打车", walk: true },
+  { kind: "sight", label: "打车 · 或千厮门大桥步行 20 分", walk: true },
+  { kind: "meal", route: "洪崖洞|独一味", label: "打车" },
+  { kind: "transfer", route: "独一味|酒店", label: "打车" }
  ]
 },
-{ label: "Day 4 · 10.8", wx: "🌦 雨转阴 18–20°", summary: "不排景点｜轨道为主，打车 ≈60–110 元｜19:15 前回酒店出发去机场",
+{ label: "Day 4 · 10.8", wx: "🌦 雨转阴 18–20°", summary: "不排景点｜19:15 前回酒店出发去机场",
  stops: [
   { n: "退房寄存行李", t: "8:30–9:30", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "山城柴火鸡", t: "12:00–13:15", slot: "中午", type: "food", ll: [106.478644, 29.465506], rid: "chaihuoji" },
@@ -207,14 +207,14 @@ var DAYS = [
   { n: "机场 T3 · 22:00 飞", t: "≈20:00", slot: "晚上", type: "airport", ll: AIRPORT }
  ],
  legs: [
-  { kind: "transfer", label: "2 号线临江门→新山村 ≈5 元 · 下午自由活动（雨天室内）", rail: true },
-  { kind: "meal", route: "柴火鸡|蒋大叔", label: "打车 15km ≈34 元 · 或环线换 6 号线 ≈40 分" },
-  { kind: "transfer", route: "蒋大叔|酒店", label: "打车 11km ≈26 元" },
-  { kind: "transfer", route: "酒店|机场", label: "轨道 ≈6 元 45 分 · 打车 20.8km ≈46 元" }
+  { kind: "transfer", label: "2 号线临江门→新山村 · 下午自由活动（雨天室内）", rail: true },
+  { kind: "meal", route: "柴火鸡|蒋大叔", label: "打车 · 或环线换 6 号线 ≈40 分" },
+  { kind: "transfer", route: "蒋大叔|酒店", label: "打车" },
+  { kind: "transfer", route: "酒店|机场", label: "轨道 ≈45 分 · 或打车" }
  ]
 }];
 
-var KINDCOLOR = { meal: "#2563eb", sight: "#f59e0b", transfer: "#9ca3af" };
+var KINDCOLOR = { meal: "#2563eb", sight: "#e11d48", transfer: "#9ca3af" };
 var KINDNAME = { meal: "吃饭", sight: "景点", transfer: "转场" };
 var state = { day: 0, kinds: { meal: true, sight: true, transfer: true }, side: "itin" };
 
@@ -229,7 +229,7 @@ legend.onAdd = function () {
   var d = L.DomUtil.create("div", "map-legend");
   d.innerHTML =
     '<div><span class="lg-line" style="background:#2563eb"></span>吃饭路线</div>' +
-    '<div><span class="lg-line" style="background:#f59e0b"></span>景点路线</div>' +
+    '<div><span class="lg-line" style="background:#e11d48"></span>景点路线</div>' +
     '<div><span class="lg-line" style="background:#9ca3af"></span>转场（虚线=轨道/步行）</div>' +
     '<div>🔵 餐厅　🟠 景点　⬛ 酒店/机场</div>';
   return d;
@@ -244,7 +244,7 @@ function icon(cls, txt) {
 function restPopup(s) {
   var r = RESTAURANTS[s.rid] || {};
   return '<div class="pop-t">' + esc(s.n) + '</div><div class="pop-row">' + esc(r.addr || "") + '</div>' +
-    '<div class="pop-row">人均 ' + esc(r.price || "?") + ' · 排队：' + esc(r.q || "") + '</div>' +
+    '<div class="pop-row">排队：' + esc(r.q || "") + '</div>' +
     '<div class="pop-row">预约：' + esc(r.book || "") + '</div>' +
     '<div class="pop-warn">👉 ' + esc(r.tip || "") + "</div>";
 }
@@ -259,7 +259,7 @@ function spotPopup(s) {
 var dayGroups = [];
 DAYS.forEach(function (d, di) {
   var grp = L.layerGroup().addTo(map);
-  var g = { group: grp, lines: [] };
+  var g = { group: grp, lines: [], casings: [] };
   var num = 0;
   d.stops.forEach(function (s, i) {
     if (s.hide) return;
@@ -285,14 +285,17 @@ DAYS.forEach(function (d, di) {
       pts = [[a[1], a[0]], [b[1], b[0]]];
     }
     var real = !!lg.route;
+    var cas = L.polyline(pts, { color: "#ffffff", weight: real ? 7 : 5, opacity: 0.75, interactive: false });
+    cas.addTo(grp);
     var line = L.polyline(pts, {
-      color: KINDCOLOR[lg.kind], weight: real ? 4 : 3, opacity: real ? 0.85 : 0.7,
+      color: KINDCOLOR[lg.kind], weight: real ? 4.5 : 3, opacity: 0.95,
       dashArray: real ? null : "6 6"
     });
     line.bindTooltip(esc(lg.label), { sticky: true });
     line._kind = lg.kind;
     line.addTo(grp);
     g.lines.push(line);
+    g.casings.push(cas);
   });
   dayGroups.push(g);
 });
@@ -311,6 +314,11 @@ function chip(parent, label, on, cb, cls) {
   return b;
 }
 function fitAll() { map.flyToBounds(L.latLngBounds([[29.4655, 106.424], [29.7107, 106.6562]]).pad(0.05), { duration: 0.5 }); }
+function renderWx() {
+  var elx = document.getElementById("wxLine");
+  if (state.day === 0) elx.textContent = DAYS.map(function (d) { return d.label.split("·")[1].trim() + " " + d.wx; }).join("　") + "（中央气象台 9.26 趋势预报）";
+  else elx.textContent = DAYS[state.day - 1].label + "　" + DAYS[state.day - 1].wx;
+}
 function renderTabs() {
   dayTabs.innerHTML = "";
   chip(dayTabs, "全部", state.day === 0, function () { state.day = 0; renderAll(); });
@@ -318,6 +326,7 @@ function renderTabs() {
     chip(dayTabs, d.label, state.day === i + 1, function () { state.day = i + 1; renderAll(); });
   });
   chip(dayTabs, "全览", false, function () { fitAll(); });
+  renderWx();
 }
 function renderLayers() {
   layerChips.innerHTML = "";
@@ -334,10 +343,13 @@ function applyFilter() {
     var on = state.day === 0 || state.day === di + 1;
     if (on && !map.hasLayer(g.group)) g.group.addTo(map);
     if (!on && map.hasLayer(g.group)) map.removeLayer(g.group);
-    if (on) g.lines.forEach(function (ln) {
+    if (on) g.lines.forEach(function (ln, i) {
       var vis = state.kinds[ln._kind];
-      ln.setStyle({ opacity: vis ? (ln.options.dashArray ? 0.7 : 0.85) : 0 });
-      vis ? ln.addTo(g.group) : g.group.removeLayer(ln);
+      var cas = g.casings[i];
+      ln.setStyle({ opacity: vis ? 0.95 : 0 });
+      if (cas) cas.setStyle({ opacity: vis ? 0.75 : 0 });
+      if (vis) { if (cas) cas.addTo(g.group); ln.addTo(g.group); }
+      else { if (cas) g.group.removeLayer(cas); g.group.removeLayer(ln); }
     });
   });
   if (state.day > 0) {
@@ -360,7 +372,7 @@ function renderSide() {
     var lastSlot = "";
     d.stops.forEach(function (s, i) {
       if (s.slot !== lastSlot) { lastSlot = s.slot; html += '<div class="slot-h">' + lastSlot + "</div>"; }
-      var dot = s.type === "food" ? "#2563eb" : s.type === "spot" ? "#f59e0b" : "#6b7280";
+      var dot = s.type === "food" ? "#2563eb" : s.type === "spot" ? "#e11d48" : "#6b7280";
       html += '<div class="stop" data-d="' + di + '" data-i="' + i + '"><span class="dot" style="background:' + dot + '"></span><span class="tm">' + esc(s.t) + "</span><span>" + esc(s.n) + "</span></div>";
     });
     html += "</div>";
@@ -403,7 +415,7 @@ function renderList() {
       if (s.type !== "food" || seen2[s.rid]) return;
       seen2[s.rid] = true;
       var r = RESTAURANTS[s.rid] || {};
-      html += '<div class="lrow" data-ll="' + s.ll[1] + "," + s.ll[0] + '"><span class="ln">' + esc(s.n) + '</span> <span class="lm">人均 ' + esc(r.price || "?") + " · " + d.label + '</span>' +
+      html += '<div class="lrow" data-ll="' + s.ll[1] + "," + s.ll[0] + '"><span class="ln">' + esc(s.n) + '</span> <span class="lm">' + d.label + '</span>' +
         '<div class="lm">排队：' + esc(r.q || "") + '</div>' +
         '<div class="lr">预约：' + esc(r.book || "") + "</div></div>";
     });
