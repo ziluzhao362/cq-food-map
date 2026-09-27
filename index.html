@@ -48,6 +48,7 @@
   .mk-spot { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11.5px; background: #e11d48; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
   .mk-hotel { width: 19px; height: 19px; border-radius: 5px; background: #111827; color: #fff; font-size: 10.5px; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
   .mk-shop { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11.5px; background: #7c3aed; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
+  .mk-alt { width: 22px; height: 22px; border-radius: 50%; color: #2563eb; font-size: 11px; background: #fff; border: 2px dashed #2563eb; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
   .mk-airport { width: 22px; height: 22px; border-radius: 50%; background: #111827; color: #fff; font-size: 12px; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
   .mk-warn::after { content: "!"; position: absolute; top: -7px; right: -7px; width: 13px; height: 13px; border-radius: 50%; background: #ef4444; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff; }
 
@@ -105,7 +106,8 @@ var RESTAURANTS = {
  fuyu:      { addr: "九龙坡谢家湾正街 55 号（万象城旁）", price: "≈75（估）", q: "国庆晚市推断 30–60 分", book: "无预约渠道", tip: "17:30–18:00 到最稳；午市电话确认" },
  kaojiang:  { addr: "九龙坡盘龙新城·奥园广场附近（示意）", price: "56", q: "推断 15–60 分，22 点后宽松", book: "无预约渠道", tip: "宵夜段去几乎不等" },
  yejiaoji:  { addr: "渝北区泰山大道东段 98 号附 136 号（3 号线狮子坪）", price: "≈80（估）", q: "国庆晚市推断 40–90 分", book: "☎023-63081391 订包房", tip: "午餐压力小" },
- chaoxia:   { addr: "江北区洋河北路 1 号附 8 号（6 号线黄泥塝）", price: "≈95", q: "高峰 40–60 分，号可能发光", book: "⚠️16:30 大众点评线上取号", tip: "17:00 开门即吃" },
+ chaoxia:   { addr: "江北区洋河北路 1 号附 8 号（6 号线黄泥塝）", price: "≈95", q: "高峰 40–60 分，号可能发光", book: "⚠️16:30 大众点评线上取号", tip: "17:00 开门即吃；取不到号改去胡恰（观音桥北城天街，6 号线红旗河沟换 3 号线 ≈15 分）" },
+ huqia:     { addr: "江北区龙湖重庆北城天街（3/9 号线观音桥站）", price: "≈110", q: "开业时排 3 小时，2026 年已明显回落", book: "门店取号", tip: "江西创意菜；招牌辣鸡爪、空心粉配温泉蛋、碎椒牛肉配吐司" },
  kaka:      { addr: "渝北区红石支路 22 号欧鹏花园（6 号线花卉园）", price: "≈90", q: "国庆推断 2–4 小时，全表最凶", book: "⚠️16:55 前大众点评线上取号", tip: "23:00 打烊" },
  tianbang:  { addr: "渝中区新华路磨房巷 25 号（较场口 10A 口）", price: "80", q: "核心区国庆推断 60–90 分以上", book: "☎023-63254759 提前订位", tip: "11:00 或 21:00 后错峰" },
  jiuhotpot: { addr: "江北区北城路 121 号珠江国际（9 号线刘家台站 280 米）", price: "83", q: "推断 20–40 分", book: "☎15683110925", tip: "17:30 前到" },
@@ -174,6 +176,9 @@ var DAYS = [
   { kind: "transfer", route: "酒店|炒虾", label: "打车" },
   { kind: "meal", route: "炒虾|咖咖", label: "打车" },
   { kind: "transfer", route: "咖咖|酒店", label: "打车" }
+ ],
+ alts: [
+  { n: "胡恰·景德江西菜（晚餐备选）", t: "炒虾取不到号时", slot: "晚上", ll: [106.533598, 29.57779], rid: "huqia" }
  ]
 },
 { label: "Day 3 · 10.7", wx: "🌧 雨 20–25°", summary: "雨天室内日：博物馆+索道+罗汉寺+九火锅+洪崖洞",
@@ -290,6 +295,15 @@ DAYS.forEach(function (d, di) {
     s._m = m;
     m.addTo(grp);
   });
+  // 备选点（不进路线，虚线蓝色标记）
+  (d.alts || []).forEach(function (s) {
+    var m = L.marker([s.ll[1], s.ll[0]], { icon: icon("mk-alt", "备") });
+    m.on("click", function () { map.flyTo([s.ll[1], s.ll[0]], 15, { duration: 0.5 }); });
+    m.bindPopup(restPopup(s));
+    m.bindTooltip(esc(s.n), { direction: "top", offset: [0, -10] });
+    s._m = m;
+    m.addTo(grp);
+  });
   d.legs.forEach(function (lg, i) {
     var a = d.stops[i].ll, b = d.stops[i + 1].ll;
     var pts;
@@ -390,12 +404,18 @@ function renderSide() {
       var dot = s.type === "food" ? "#2563eb" : s.type === "spot" ? "#e11d48" : s.type === "shop" ? "#7c3aed" : "#6b7280";
       html += '<div class="stop" data-d="' + di + '" data-i="' + i + '"><span class="dot" style="background:' + dot + '"></span><span class="tm">' + esc(s.t) + "</span><span>" + esc(s.n) + "</span></div>";
     });
+    (d.alts || []).forEach(function (s, ai) {
+      html += '<div class="stop" data-alt="' + di + ':' + ai + '"><span class="dot" style="background:#fff;border:1.5px dashed #2563eb"></span><span class="tm">' + esc(s.t) + "</span><span>" + esc(s.n) + "</span></div>";
+    });
     html += "</div>";
   });
   side.innerHTML = html;
   side.querySelectorAll(".stop").forEach(function (e) {
     e.onclick = function () {
-      var s = DAYS[+e.getAttribute("data-d")].stops[+e.getAttribute("data-i")];
+      var alt = e.getAttribute("data-alt");
+      var s;
+      if (alt) { var p = alt.split(":"); s = DAYS[+p[0]].alts[+p[1]]; }
+      else { s = DAYS[+e.getAttribute("data-d")].stops[+e.getAttribute("data-i")]; }
       map.flyTo([s.ll[1], s.ll[0]], 15, { duration: 0.6 });
       if (s._m) setTimeout(function () { s._m.openPopup(); }, 650);
     };
