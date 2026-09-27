@@ -47,6 +47,7 @@
   .mk-food { width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 12px; background: #2563eb; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
   .mk-spot { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11.5px; background: #e11d48; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
   .mk-hotel { width: 19px; height: 19px; border-radius: 5px; background: #111827; color: #fff; font-size: 10.5px; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+  .mk-shop { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11.5px; background: #7c3aed; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
   .mk-airport { width: 22px; height: 22px; border-radius: 50%; background: #111827; color: #fff; font-size: 12px; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
   .mk-warn::after { content: "!"; position: absolute; top: -7px; right: -7px; width: 13px; height: 13px; border-radius: 50%; background: #ef4444; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff; }
 
@@ -112,6 +113,10 @@ var RESTAURANTS = {
  chaihuoji: { addr: "大渡口区松青路 1074 号附 12 号（2 号线新山村）", price: "≈62", q: "午市基本不等（推断）", book: "无线上取号；午市电话确认", tip: "排午餐正好错峰" },
  jiangdashu:{ addr: "渝北区松石南路 48 号附 2 号（6 号线花卉园）", price: "≈61", q: "推断 0–30 分，全表晚餐最低", book: "无预约渠道", tip: "营业时间未公开，当天点评 App 确认几点开" }
 };
+// 购物点
+var SHOPINFO = {
+ laiste: { addr: "万象城北区 B1（2 号线谢家湾站，富玉饭店旁）", note: "卖 McHugs（薰衣草可加热毛绒，呆呆是深棕脚掌款）；同商场南区 L3 还有 SDN'LeBei（Jellycat+Steiff）可顺看", tip: "商场营业到 22:00，饭后消食顺逛" }
+};
 var SPOTINFO = {
  nanshan:  { ticket: "免费", rsvp: "无需预约", student: "免费", note: "黄葛古道 2.5km 石板路上山→老君洞（免费，17:00 关门）→黄桷垭老街下山。雨天石板路滑，穿防滑鞋", food: "黄桷垭老街小吃（豆花饭/烤苕皮）、崇文路泉水鸡一条街；山脚南坪万达" },
  baigong:  { ticket: "免费", rsvp: "⚠️「大美重庆」公众号预约，至少提前 1 天，带身份证", student: "免费", note: "9:00–17:00（16:30 停止入馆），周一不闭馆；烈士墓站 2B 口换 210 路步行最少", food: "歌乐山辣子鸡" },
@@ -133,15 +138,17 @@ var DAYS = [
   { n: "朱儿面庄", t: "11:00–12:00", slot: "中午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
   { n: "酒店入住", t: "12:45–14:00", slot: "中午", type: "hotel", ll: HOTEL },
   { n: "南山步道→黄桷垭老街", t: "14:30–17:30", slot: "下午", type: "spot", ll: [106.596897, 29.540924], sid: "nanshan" },
-  { n: "富玉饭店", t: "18:00–19:30", slot: "晚上", type: "food", ll: [106.518548, 29.517256], rid: "fuyu" },
-  { n: "山城烤匠", t: "20:00–22:00", slot: "晚上", type: "food", ll: [106.491671, 29.503323], rid: "kaojiang" },
-  { n: "回酒店", t: "≈22:45", slot: "晚上", type: "hotel", ll: HOTEL, hide: true }
+  { n: "富玉饭店", t: "18:00–19:15", slot: "晚上", type: "food", ll: [106.518548, 29.517256], rid: "fuyu" },
+  { n: "莱斯特文创·万象城北区B1", t: "19:20–19:50", slot: "晚上", type: "shop", ll: [106.5189, 29.5180], sid: "laiste" },
+  { n: "山城烤匠", t: "20:30–22:30", slot: "晚上", type: "food", ll: [106.491671, 29.503323], rid: "kaojiang" },
+  { n: "回酒店", t: "≈23:00", slot: "晚上", type: "hotel", ll: HOTEL, hide: true }
  ],
  legs: [
   { kind: "transfer", route: "机场|面庄", label: "打车 · 或 10 号线换 3 号线" },
   { kind: "transfer", route: "面庄|酒店", label: "打车" },
   { kind: "transfer", route: "酒店|黄葛古道", label: "打车 · 或 6 号线上新街" },
   { kind: "meal", route: "黄桷垭|富玉", label: "打车" },
+  { kind: "shop", label: "步行 5 分", walk: true },
   { kind: "meal", route: "富玉|烤匠", label: "打车" },
   { kind: "transfer", route: "烤匠|酒店", label: "打车" }
  ]
@@ -214,9 +221,9 @@ var DAYS = [
  ]
 }];
 
-var KINDCOLOR = { meal: "#2563eb", sight: "#e11d48", transfer: "#9ca3af" };
-var KINDNAME = { meal: "吃饭", sight: "景点", transfer: "转场" };
-var state = { day: 0, kinds: { meal: true, sight: true, transfer: true }, side: "itin" };
+var KINDCOLOR = { meal: "#2563eb", sight: "#e11d48", transfer: "#9ca3af", shop: "#7c3aed" };
+var KINDNAME = { meal: "吃饭", sight: "景点", transfer: "转场", shop: "购物" };
+var state = { day: 0, kinds: { meal: true, sight: true, transfer: true, shop: true }, side: "itin" };
 
 var map = L.map("map", { zoomControl: true }).setView([29.585, 106.56], 12);
 L.tileLayer("https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}", {
@@ -231,7 +238,8 @@ legend.onAdd = function () {
     '<div><span class="lg-line" style="background:#2563eb"></span>吃饭路线</div>' +
     '<div><span class="lg-line" style="background:#e11d48"></span>景点路线</div>' +
     '<div><span class="lg-line" style="background:#9ca3af"></span>转场（虚线=轨道/步行）</div>' +
-    '<div>🔵 餐厅　🔴 景点　⬛ 酒店/机场</div>';
+    '<div><span class="lg-line" style="background:#7c3aed"></span>购物</div>' +
+    '<div>🔵 餐厅　🔴 景点　🟣 购物　⬛ 酒店/机场</div>';
   return d;
 };
 legend.addTo(map);
@@ -256,6 +264,13 @@ function spotPopup(s) {
     (sp.food ? '<div class="pop-row">🍜 ' + esc(sp.food) + "</div>" : "");
 }
 
+function shopPopup(s) {
+  var sp = SHOPINFO[s.sid] || {};
+  return '<div class="pop-t">' + esc(s.n) + '</div><div class="pop-row">' + esc(sp.addr || "") + '</div>' +
+    '<div class="pop-row">' + esc(sp.note || "") + '</div>' +
+    (sp.tip ? '<div class="pop-warn">👉 ' + esc(sp.tip) + "</div>" : "");
+}
+
 var dayGroups = [];
 DAYS.forEach(function (d, di) {
   var grp = L.layerGroup().addTo(map);
@@ -265,11 +280,11 @@ DAYS.forEach(function (d, di) {
     if (s.hide) return;
     num++;
     var cls = s.type === "food" ? "mk-food" + (s.rid === "kaka" || s.rid === "tianbang" || s.rid === "chaoxia" ? " mk-warn" : "")
-            : s.type === "spot" ? "mk-spot" : s.type === "hotel" ? "mk-hotel" : "mk-airport";
-    var glyph = s.type === "hotel" ? "宿" : s.type === "airport" ? "✈" : String(num);
+            : s.type === "spot" ? "mk-spot" : s.type === "shop" ? "mk-shop" : s.type === "hotel" ? "mk-hotel" : "mk-airport";
+    var glyph = s.type === "hotel" ? "宿" : s.type === "airport" ? "✈" : s.type === "shop" ? "购" : String(num);
     var m = L.marker([s.ll[1], s.ll[0]], { icon: icon(cls, glyph) });
     m.on("click", function () { map.flyTo([s.ll[1], s.ll[0]], 15, { duration: 0.5 }); });
-    m.bindPopup(s.type === "food" ? restPopup(s) : s.type === "spot" ? spotPopup(s)
+    m.bindPopup(s.type === "food" ? restPopup(s) : s.type === "spot" ? spotPopup(s) : s.type === "shop" ? shopPopup(s)
       : '<div class="pop-t">' + esc(s.n) + '</div><div class="pop-row">' + esc(s.t) + "</div>");
     m.bindTooltip(esc(s.n), { direction: "top", offset: [0, -10] });
     s._m = m;
@@ -330,7 +345,7 @@ function renderTabs() {
 }
 function renderLayers() {
   layerChips.innerHTML = "";
-  ["meal", "sight", "transfer"].forEach(function (k) {
+  ["meal", "sight", "transfer", "shop"].forEach(function (k) {
     chip(layerChips, KINDNAME[k] + "路线", state.kinds[k], function () {
       state.kinds[k] = !state.kinds[k];
       applyFilter();
@@ -372,7 +387,7 @@ function renderSide() {
     var lastSlot = "";
     d.stops.forEach(function (s, i) {
       if (s.slot !== lastSlot) { lastSlot = s.slot; html += '<div class="slot-h">' + lastSlot + "</div>"; }
-      var dot = s.type === "food" ? "#2563eb" : s.type === "spot" ? "#e11d48" : "#6b7280";
+      var dot = s.type === "food" ? "#2563eb" : s.type === "spot" ? "#e11d48" : s.type === "shop" ? "#7c3aed" : "#6b7280";
       html += '<div class="stop" data-d="' + di + '" data-i="' + i + '"><span class="dot" style="background:' + dot + '"></span><span class="tm">' + esc(s.t) + "</span><span>" + esc(s.n) + "</span></div>";
     });
     html += "</div>";
@@ -418,6 +433,18 @@ function renderList() {
       html += '<div class="lrow" data-ll="' + s.ll[1] + "," + s.ll[0] + '"><span class="ln">' + esc(s.n) + '</span> <span class="lm">' + d.label + '</span>' +
         '<div class="lm">排队：' + esc(r.q || "") + '</div>' +
         '<div class="lr">预约：' + esc(r.book || "") + "</div></div>";
+    });
+  });
+  html += '<div class="lsec">购物</div>';
+  var seen3 = {};
+  DAYS.forEach(function (d) {
+    d.stops.forEach(function (s) {
+      if (s.type !== "shop" || seen3[s.sid]) return;
+      seen3[s.sid] = true;
+      var sp = SHOPINFO[s.sid] || {};
+      html += '<div class="lrow" data-ll="' + s.ll[1] + "," + s.ll[0] + '"><span class="ln">' + esc(s.n) + '</span> <span class="lm">' + d.label + '</span>' +
+        '<div class="lm">' + esc(sp.addr || "") + '</div>' +
+        '<div class="lm">' + esc(sp.note || "") + "</div></div>";
     });
   });
   side.innerHTML = html;
