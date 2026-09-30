@@ -134,7 +134,7 @@ var SPOTINFO = {
 
 // kind: meal 吃饭段(蓝) / sight 景点段(橙) / transfer 转场(灰虚线)；route=ROUTES 键，rev=true 反向；rail/walk=直线虚线
 var DAYS = [
-{ label: "Day 1 · 10.5", wx: "🌦 雨转阴 19–26°", summary: "南山必去日",
+{ label: "Day 1 · 10.5", wx: "🌥 阴转多云 15–19°（偏凉，带外套）", summary: "南山必去日",
  stops: [
   { n: "机场 T3 落地", t: "10:00", slot: "上午", type: "airport", ll: AIRPORT },
   { n: "朱儿面庄", t: "11:00–12:00", slot: "中午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
@@ -155,7 +155,7 @@ var DAYS = [
   { kind: "transfer", route: "烤匠|酒店", label: "打车" }
  ]
 },
-{ label: "Day 2 · 10.6", wx: "🌥 多云转雨 20–29°", summary: "上午趁多云去渣滓洞白公馆，下午雨天回酒店休整",
+{ label: "Day 2 · 10.6", wx: "☀️ 晴 16–25°", summary: "上午渣滓洞白公馆，晴天下午可继续户外或休整",
  stops: [
   { n: "酒店出发", t: "7:10", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "朱儿面庄", t: "7:30–8:30", slot: "上午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
@@ -181,7 +181,7 @@ var DAYS = [
   { n: "胡恰·景德江西菜（晚餐备选）", t: "炒虾取不到号时", slot: "晚上", ll: [106.533598, 29.57779], rid: "huqia" }
  ]
 },
-{ label: "Day 3 · 10.7", wx: "🌧 雨 20–25°", summary: "雨天室内日：博物馆+索道+罗汉寺+九火锅+洪崖洞",
+{ label: "Day 3 · 10.7", wx: "🌥 多云转阴 17–27°", summary: "多云天：博物馆+索道+罗汉寺+九火锅+洪崖洞",
  stops: [
   { n: "酒店·索道购票取号", t: "7:15", slot: "上午", type: "hotel", ll: HOTEL, hide: true },
   { n: "三峡博物馆", t: "8:30–10:30", slot: "上午", type: "spot", ll: [106.55034, 29.56208], sid: "museum" },
@@ -210,7 +210,7 @@ var DAYS = [
   { kind: "transfer", route: "独一味|酒店", label: "打车" }
  ]
 },
-{ label: "Day 4 · 10.8", wx: "🌦 雨转阴 18–20°", summary: "不排景点｜19:15 前回酒店出发去机场",
+{ label: "Day 4 · 10.8", wx: "🌥 多云 19–29°", summary: "不排景点｜19:15 前回酒店出发去机场",
  stops: [
   { n: "退房寄存行李", t: "8:30–9:30", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "山城柴火鸡", t: "12:00–13:15", slot: "中午", type: "food", ll: [106.478644, 29.465506], rid: "chaihuoji" },
@@ -219,7 +219,7 @@ var DAYS = [
   { n: "机场 T3 · 22:00 飞", t: "≈20:00", slot: "晚上", type: "airport", ll: AIRPORT }
  ],
  legs: [
-  { kind: "transfer", label: "2 号线临江门→新山村 · 下午自由活动（雨天室内）", rail: true },
+  { kind: "transfer", label: "2 号线临江门→新山村 · 下午自由活动（多云天随意）", rail: true },
   { kind: "meal", route: "柴火鸡|蒋大叔", label: "打车 · 或环线换 6 号线 ≈40 分" },
   { kind: "transfer", route: "蒋大叔|酒店", label: "打车" },
   { kind: "transfer", route: "酒店|机场", label: "轨道 ≈45 分 · 或打车" }
@@ -345,7 +345,7 @@ function chip(parent, label, on, cb, cls) {
 function fitAll() { map.flyToBounds(L.latLngBounds([[29.4655, 106.424], [29.7107, 106.6562]]).pad(0.05), { duration: 0.5 }); }
 function renderWx() {
   var elx = document.getElementById("wxLine");
-  if (state.day === 0) elx.textContent = DAYS.map(function (d) { return d.label.split("·")[1].trim() + " " + d.wx; }).join("　") + "（中央气象台 9.26 趋势预报）";
+  if (state.day === 0) elx.textContent = DAYS.map(function (d) { return d.label.split("·")[1].trim() + " " + d.wx; }).join("　") + "（中央气象台 9.30 预报）";
   else elx.textContent = DAYS[state.day - 1].label + "　" + DAYS[state.day - 1].wx;
 }
 function renderTabs() {
