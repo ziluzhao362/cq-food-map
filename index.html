@@ -136,12 +136,13 @@ var SPOTINFO = {
 
 // kind: meal 吃饭段(蓝) / sight 景点段(橙) / transfer 转场(灰虚线)；route=ROUTES 键，rev=true 反向；rail/walk=直线虚线
 var DAYS = [
-{ label: "Day 1 · 10.5", wx: "🌦 小雨转多云 18–21°", summary: "南山必去日",
+{ label: "Day 1 · 10.5", wx: "🌦 小雨转多云 18–21°", summary: "中午聚金花市配花→酒店→南山，晚上富玉+烤匠",
  stops: [
   { n: "机场 T3 落地", t: "10:00", slot: "上午", type: "airport", ll: AIRPORT },
   { n: "朱儿面庄", t: "11:00–12:00", slot: "中午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
-  { n: "酒店入住", t: "12:45–14:00", slot: "中午", type: "hotel", ll: HOTEL },
-  { n: "南山步道→黄桷垭老街", t: "14:30–17:30", slot: "下午", type: "spot", ll: [106.596897, 29.540924], sid: "nanshan" },
+  { n: "聚金花市（自由配花）", t: "12:30–13:10", slot: "中午", type: "shop", ll: [106.560181, 29.565832], sid: "jujin" },
+  { n: "酒店入住", t: "13:30–14:15", slot: "中午", type: "hotel", ll: HOTEL },
+  { n: "南山步道→黄桷垭老街", t: "14:45–17:30", slot: "下午", type: "spot", ll: [106.596897, 29.540924], sid: "nanshan" },
   { n: "富玉饭店", t: "18:00–19:15", slot: "晚上", type: "food", ll: [106.518548, 29.517256], rid: "fuyu" },
   { n: "莱斯特文创·万象城北区B1", t: "19:20–19:50", slot: "晚上", type: "shop", ll: [106.5189, 29.5180], sid: "laiste" },
   { n: "山城烤匠", t: "20:30–22:30", slot: "晚上", type: "food", ll: [106.491671, 29.503323], rid: "kaojiang" },
@@ -149,7 +150,8 @@ var DAYS = [
  ],
  legs: [
   { kind: "transfer", route: "机场|面庄", label: "打车 · 或 10 号线换 3 号线" },
-  { kind: "transfer", route: "面庄|酒店", label: "打车" },
+  { kind: "shop", label: "打车 ≈20 分 · 或 3 号线牛角沱换 2 号线 ≈30 分", walk: true },
+  { kind: "transfer", label: "2 号线大溪沟→临江门 2 站+步行 · 或打车起步价", walk: true },
   { kind: "transfer", route: "酒店|黄葛古道", label: "打车 · 或 6 号线上新街" },
   { kind: "meal", route: "黄桷垭|富玉", label: "打车" },
   { kind: "shop", label: "步行 5 分", walk: true },
@@ -191,8 +193,7 @@ var DAYS = [
   { n: "三峡博物馆", t: "8:30–10:30", slot: "上午", type: "spot", ll: [106.55034, 29.56208], sid: "museum" },
   { n: "人民大礼堂外观", t: "10:30–10:50", slot: "上午", type: "spot", ll: [106.553842, 29.561557], sid: "hall" },
   { n: "中山四路·周公馆", t: "11:00–11:45", slot: "上午", type: "spot", ll: [106.550573, 29.565264], sid: "zhongshan" },
-  { n: "聚金花市（自由配花）", t: "11:45–12:20", slot: "中午", type: "shop", ll: [106.560181, 29.565832], sid: "jujin" },
-  { n: "长江索道", t: "12:30–13:00", slot: "中午", type: "spot", ll: [106.582513, 29.557991], sid: "suodao" },
+  { n: "长江索道", t: "12:00–12:30", slot: "中午", type: "spot", ll: [106.582513, 29.557991], sid: "suodao" },
   { n: "天棒老火锅", t: "13:00–14:30", slot: "中午", type: "food", ll: [106.574963, 29.553115], rid: "tianbang" },
   { n: "罗汉寺", t: "15:00–16:00", slot: "下午", type: "spot", ll: [106.581806, 29.559942], sid: "luohan" },
   { n: "湖广会馆", t: "16:00–17:15", slot: "下午", type: "spot", ll: [106.5908, 29.5545], sid: "huguang" },
@@ -205,8 +206,7 @@ var DAYS = [
   { kind: "sight", label: "2 号线曾家岩 ≈15 分", rail: true },
   { kind: "sight", label: "步行 3 分", walk: true },
   { kind: "sight", label: "步行 10 分", walk: true },
-  { kind: "shop", label: "打车起步价 · 或 2 号线大溪沟 1 站", walk: true },
-  { kind: "sight", label: "打车起步价 · 或步行 20 分", walk: true },
+  { kind: "sight", label: "步行 15 分 · 或打车", walk: true },
   { kind: "meal", label: "步行 10 分", walk: true },
   { kind: "sight", label: "步行 8 分", walk: true },
   { kind: "sight", label: "步行 12 分", walk: true },
