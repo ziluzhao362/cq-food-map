@@ -108,6 +108,7 @@ var RESTAURANTS = {
  yejiaoji:  { addr: "渝北区泰山大道东段 98 号附 136 号（3 号线狮子坪）", price: "≈80（估）", q: "国庆晚市推断 40–90 分", book: "☎023-63081391 订包房", tip: "午餐压力小" },
  chaoxia:   { addr: "江北区洋河北路 1 号附 8 号（6 号线黄泥塝）", price: "≈95", q: "高峰 40–60 分，号可能发光", book: "⚠️16:30 大众点评线上取号", tip: "17:00 开门即吃；取不到号改去胡恰（观音桥北城天街，6 号线红旗河沟换 3 号线 ≈15 分）" },
  huqia:     { addr: "江北区龙湖重庆北城天街（3/9 号线观音桥站）", price: "≈110", q: "开业时排 3 小时，2026 年已明显回落", book: "门店取号", tip: "江西创意菜；招牌辣鸡爪、空心粉配温泉蛋、碎椒牛肉配吐司" },
+ bella:     { addr: "渝中区瑞天路 162-1 号重庆天地（9 号线化龙桥站步行约 18–20 分）", price: "≈101", q: "推断不等位或短等（街铺披萨店）", book: "☎13002349890", tip: "渝中区比萨好评榜第 1 名；翠湖天地店离化龙桥站更近（400 米）但那家不是老店" },
  kaka:      { addr: "渝北区红石支路 22 号欧鹏花园（6 号线花卉园）", price: "≈90", q: "国庆推断 2–4 小时，全表最凶", book: "⚠️16:55 前大众点评线上取号", tip: "23:00 打烊" },
  tianbang:  { addr: "渝中区新华路磨房巷 25 号（较场口 10A 口）", price: "80", q: "核心区国庆推断 60–90 分以上", book: "☎023-63254759 提前订位", tip: "11:00 或 21:00 后错峰" },
  jiuhotpot: { addr: "江北区北城路 121 号珠江国际（9 号线刘家台站 280 米）", price: "83", q: "推断 20–40 分", book: "☎15683110925", tip: "17:30 前到" },
@@ -134,7 +135,7 @@ var SPOTINFO = {
 
 // kind: meal 吃饭段(蓝) / sight 景点段(橙) / transfer 转场(灰虚线)；route=ROUTES 键，rev=true 反向；rail/walk=直线虚线
 var DAYS = [
-{ label: "Day 1 · 10.5", wx: "🌥 阴转多云 15–19°（偏凉，带外套）", summary: "南山必去日",
+{ label: "Day 1 · 10.5", wx: "🌦 小雨转多云 18–21°", summary: "南山必去日",
  stops: [
   { n: "机场 T3 落地", t: "10:00", slot: "上午", type: "airport", ll: AIRPORT },
   { n: "朱儿面庄", t: "11:00–12:00", slot: "中午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
@@ -155,7 +156,7 @@ var DAYS = [
   { kind: "transfer", route: "烤匠|酒店", label: "打车" }
  ]
 },
-{ label: "Day 2 · 10.6", wx: "☀️ 晴 16–25°", summary: "上午渣滓洞白公馆，晴天下午可继续户外或休整",
+{ label: "Day 2 · 10.6", wx: "☀️ 晴 17–23°", summary: "上午渣滓洞白公馆，晴天下午可继续户外或休整",
  stops: [
   { n: "酒店出发", t: "7:10", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "朱儿面庄", t: "7:30–8:30", slot: "上午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
@@ -181,7 +182,7 @@ var DAYS = [
   { n: "胡恰·景德江西菜（晚餐备选）", t: "炒虾取不到号时", slot: "晚上", ll: [106.533598, 29.57779], rid: "huqia" }
  ]
 },
-{ label: "Day 3 · 10.7", wx: "🌥 多云转阴 17–27°", summary: "多云天：博物馆+索道+罗汉寺+九火锅+洪崖洞",
+{ label: "Day 3 · 10.7", wx: "🌤 晴转多云 17–26°", summary: "多云天：博物馆+索道+罗汉寺+九火锅+洪崖洞",
  stops: [
   { n: "酒店·索道购票取号", t: "7:15", slot: "上午", type: "hotel", ll: HOTEL, hide: true },
   { n: "三峡博物馆", t: "8:30–10:30", slot: "上午", type: "spot", ll: [106.55034, 29.56208], sid: "museum" },
@@ -210,7 +211,7 @@ var DAYS = [
   { kind: "transfer", route: "独一味|酒店", label: "打车" }
  ]
 },
-{ label: "Day 4 · 10.8", wx: "🌥 多云 19–29°", summary: "不排景点｜19:15 前回酒店出发去机场",
+{ label: "Day 4 · 10.8", wx: "⛅ 多云 20–27°", summary: "不排景点｜19:15 前回酒店出发去机场",
  stops: [
   { n: "退房寄存行李", t: "8:30–9:30", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "山城柴火鸡", t: "12:00–13:15", slot: "中午", type: "food", ll: [106.478644, 29.465506], rid: "chaihuoji" },
@@ -223,6 +224,9 @@ var DAYS = [
   { kind: "meal", route: "柴火鸡|蒋大叔", label: "打车 · 或环线换 6 号线 ≈40 分" },
   { kind: "transfer", route: "蒋大叔|酒店", label: "打车" },
   { kind: "transfer", route: "酒店|机场", label: "轨道 ≈45 分 · 或打车" }
+ ],
+ alts: [
+  { n: "贝拉披萨·重庆天地店（下午茶加餐推荐）", t: "15:30 前后", slot: "下午", ll: [106.506793, 29.552562], rid: "bella" }
  ]
 }];
 
@@ -345,7 +349,7 @@ function chip(parent, label, on, cb, cls) {
 function fitAll() { map.flyToBounds(L.latLngBounds([[29.4655, 106.424], [29.7107, 106.6562]]).pad(0.05), { duration: 0.5 }); }
 function renderWx() {
   var elx = document.getElementById("wxLine");
-  if (state.day === 0) elx.textContent = DAYS.map(function (d) { return d.label.split("·")[1].trim() + " " + d.wx; }).join("　") + "（中央气象台 9.30 预报）";
+  if (state.day === 0) elx.textContent = DAYS.map(function (d) { return d.label.split("·")[1].trim() + " " + d.wx; }).join("　") + "（中央气象台 10.4 预报）";
   else elx.textContent = DAYS[state.day - 1].label + "　" + DAYS[state.day - 1].wx;
 }
 function renderTabs() {
