@@ -156,14 +156,15 @@ var DAYS = [
   { kind: "transfer", route: "烤匠|酒店", label: "打车" }
  ]
 },
-{ label: "Day 2 · 10.6", wx: "☀️ 晴 17–23°", summary: "上午渣滓洞白公馆，晴天下午可继续户外或休整",
+{ label: "Day 2 · 10.6", wx: "☀️ 晴 17–23°", summary: "上午渣滓洞白公馆，下午贝拉披萨加餐，晚炒虾+咖咖",
  stops: [
   { n: "酒店出发", t: "7:10", slot: "上午", type: "hotel", ll: HOTEL },
   { n: "朱儿面庄", t: "7:30–8:30", slot: "上午", type: "food", ll: [106.511587, 29.586343], rid: "zhuer" },
   { n: "白公馆", t: "9:30–11:00", slot: "上午", type: "spot", ll: [106.432473, 29.576237], sid: "baigong" },
   { n: "渣滓洞", t: "11:00–12:15", slot: "上午", type: "spot", ll: [106.432381, 29.585839], sid: "zhazidong" },
   { n: "天治宣野椒鸡", t: "13:00–14:00", slot: "中午", type: "food", ll: [106.555336, 29.603375], rid: "yejiaoji" },
-  { n: "回酒店休整", t: "14:30–17:00", slot: "下午", type: "hotel", ll: HOTEL },
+  { n: "贝拉披萨（下午茶加餐）", t: "15:00–15:45", slot: "下午", type: "food", ll: [106.506793, 29.552562], rid: "bella" },
+  { n: "回酒店小歇", t: "16:00–16:50", slot: "下午", type: "hotel", ll: HOTEL },
   { n: "炒虾大师", t: "17:00–18:45", slot: "晚上", type: "food", ll: [106.536718, 29.587251], rid: "chaoxia" },
   { n: "咖咖火锅", t: "19:30–21:30", slot: "晚上", type: "food", ll: [106.508332, 29.578718], rid: "kaka" },
   { n: "回酒店", t: "≈22:00", slot: "晚上", type: "hotel", ll: HOTEL, hide: true }
@@ -173,7 +174,8 @@ var DAYS = [
   { kind: "sight", label: "3 号线→两路口换 1 号线→烈士墓+210 路 ≈1 小时", rail: true },
   { kind: "sight", label: "步行小路 10 分 · 或观光巴士", walk: true },
   { kind: "meal", route: "渣滓洞|野椒鸡", label: "打车" },
-  { kind: "transfer", route: "野椒鸡|酒店", label: "打车" },
+  { kind: "meal", label: "打车 ≈15 分", walk: true },
+  { kind: "transfer", label: "打车 ≈10 分", walk: true },
   { kind: "transfer", route: "酒店|炒虾", label: "打车" },
   { kind: "meal", route: "炒虾|咖咖", label: "打车" },
   { kind: "transfer", route: "咖咖|酒店", label: "打车" }
@@ -224,9 +226,6 @@ var DAYS = [
   { kind: "meal", route: "柴火鸡|蒋大叔", label: "打车 · 或环线换 6 号线 ≈40 分" },
   { kind: "transfer", route: "蒋大叔|酒店", label: "打车" },
   { kind: "transfer", route: "酒店|机场", label: "轨道 ≈45 分 · 或打车" }
- ],
- alts: [
-  { n: "贝拉披萨·重庆天地店（下午茶加餐推荐）", t: "15:30 前后", slot: "下午", ll: [106.506793, 29.552562], rid: "bella" }
  ]
 }];
 
