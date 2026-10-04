@@ -118,7 +118,8 @@ var RESTAURANTS = {
 };
 // 购物点
 var SHOPINFO = {
- laiste: { addr: "万象城北区 B1（2 号线谢家湾站，富玉饭店旁）", note: "卖 McHugs（薰衣草可加热毛绒，呆呆是深棕脚掌款）；同商场南区 L3 还有 SDN'LeBei（Jellycat+Steiff）可顺看", tip: "商场营业到 22:00，饭后消食顺逛" }
+ laiste: { addr: "万象城北区 B1（2 号线谢家湾站，富玉饭店旁）", note: "卖 McHugs（薰衣草可加热毛绒，呆呆是深棕脚掌款）；同商场南区 L3 还有 SDN'LeBei（Jellycat+Steiff）可顺看", tip: "商场营业到 22:00，饭后消食顺逛" },
+ jujin:  { addr: "渝中区大溪沟街 73 号聚金大厦 B1·聚金花市（2 号线大溪沟站步行约 5 分钟）", note: "主城最便宜的鲜切花市场：自己挑花材（玫瑰 1 元/支起、向日葵 2.5 元/支、桔梗 8 元/捧），老板打刺+简单包装，完全自由选配；约 6:00–20:00", tip: "十几家店先逛一圈比价再下手；买完可去旁边大溪沟码头拍江景" }
 };
 var SPOTINFO = {
  nanshan:  { ticket: "免费", rsvp: "无需预约", student: "免费", note: "黄葛古道 2.5km 石板路上山→老君洞（免费，17:00 关门）→黄桷垭老街下山。雨天石板路滑，穿防滑鞋", food: "黄桷垭老街小吃（豆花饭/烤苕皮）、崇文路泉水鸡一条街；山脚南坪万达" },
@@ -190,7 +191,8 @@ var DAYS = [
   { n: "三峡博物馆", t: "8:30–10:30", slot: "上午", type: "spot", ll: [106.55034, 29.56208], sid: "museum" },
   { n: "人民大礼堂外观", t: "10:30–10:50", slot: "上午", type: "spot", ll: [106.553842, 29.561557], sid: "hall" },
   { n: "中山四路·周公馆", t: "11:00–11:45", slot: "上午", type: "spot", ll: [106.550573, 29.565264], sid: "zhongshan" },
-  { n: "长江索道", t: "12:00–12:30", slot: "中午", type: "spot", ll: [106.582513, 29.557991], sid: "suodao" },
+  { n: "聚金花市（自由配花）", t: "11:45–12:20", slot: "中午", type: "shop", ll: [106.560181, 29.565832], sid: "jujin" },
+  { n: "长江索道", t: "12:30–13:00", slot: "中午", type: "spot", ll: [106.582513, 29.557991], sid: "suodao" },
   { n: "天棒老火锅", t: "13:00–14:30", slot: "中午", type: "food", ll: [106.574963, 29.553115], rid: "tianbang" },
   { n: "罗汉寺", t: "15:00–16:00", slot: "下午", type: "spot", ll: [106.581806, 29.559942], sid: "luohan" },
   { n: "湖广会馆", t: "16:00–17:15", slot: "下午", type: "spot", ll: [106.5908, 29.5545], sid: "huguang" },
@@ -203,7 +205,8 @@ var DAYS = [
   { kind: "sight", label: "2 号线曾家岩 ≈15 分", rail: true },
   { kind: "sight", label: "步行 3 分", walk: true },
   { kind: "sight", label: "步行 10 分", walk: true },
-  { kind: "sight", label: "步行 15 分 · 或打车", walk: true },
+  { kind: "shop", label: "打车起步价 · 或 2 号线大溪沟 1 站", walk: true },
+  { kind: "sight", label: "打车起步价 · 或步行 20 分", walk: true },
   { kind: "meal", label: "步行 10 分", walk: true },
   { kind: "sight", label: "步行 8 分", walk: true },
   { kind: "sight", label: "步行 12 分", walk: true },
